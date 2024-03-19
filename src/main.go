@@ -24,8 +24,7 @@ func main() {
 			_404.Render(context.Background(), w)
 		},
 	}
-
-	http.HandleFunc("/404", handlers["/404"])
+	
 	fmt.Println("App running at http://localhost:5000")
 	http.ListenAndServe(":5000", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		handler, ok := handlers[r.URL.Path]
