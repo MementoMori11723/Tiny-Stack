@@ -18,22 +18,21 @@ func main() {
 			w.WriteHeader(http.StatusOK)
 			about.Render(context.Background(), w)
 		},
+		"/404": func(w http.ResponseWriter, r *http.Request) {
+			_404 := PageNotFound()
+			w.WriteHeader(http.StatusNotFound)
+			_404.Render(context.Background(), w)
+		},
 	}
 
-	http.HandleFunc("/404", pagNotFoundHandler)
+	http.HandleFunc("/404", handlers["/404"])
 	fmt.Println("App running at http://localhost:5000")
 	http.ListenAndServe(":5000", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		handler, ok := handlers[r.URL.Path]
 		if !ok {
-			pagNotFoundHandler(w, r)
+			handlers["/404"](w, r)
 			return
 		}
 		handler(w, r)
 	}))
-}
-
-func pagNotFoundHandler(w http.ResponseWriter, r *http.Request) {
-	_404 := PageNotFound()
-	w.WriteHeader(http.StatusNotFound)
-	_404.Render(context.Background(), w)
 }
