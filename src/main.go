@@ -18,6 +18,10 @@ func main() {
 			w.WriteHeader(http.StatusOK)
 			about.Render(context.Background(), w)
 		},
+		"/api": func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			fmt.Fprint(w, `{message: "Hello, World!"}`)
+		},
 		"/404": func(w http.ResponseWriter, r *http.Request) {
 			_404 := PageNotFound()
 			w.WriteHeader(http.StatusNotFound)
