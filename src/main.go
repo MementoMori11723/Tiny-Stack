@@ -20,6 +20,7 @@ func main() {
 		},
 		"/api": func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
+			w.Header().Set("Content-Type", "application/json")
 			fmt.Fprint(w, `{message: "Hello, World!"}`)
 		},
 		"/404": func(w http.ResponseWriter, r *http.Request) {
