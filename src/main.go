@@ -7,10 +7,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
+	"runtime"
 	"time"
 )
 
-func main() {
+func runServer(w http.ResponseWriter, r *http.Request) {
 	handlers := map[string]func(http.ResponseWriter, *http.Request){
 		"/": func(w http.ResponseWriter, r *http.Request) {
 			home := Home()
@@ -33,21 +35,40 @@ func main() {
 			_404.Render(context.Background(), w)
 		},
 	}
-	server := &http.Server{Addr: ":5000", Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		handler, ok := handlers[r.URL.Path]
-		if !ok {
-			handlers["/404"](w, r)
-			return
-		}
-		handler(w, r)
-	})}
+	handler, ok := handlers[r.URL.Path]
+	if !ok {
+		handlers["/404"](w, r)
+		return
+	}
+	handler(w, r)
+}
+
+func openBrowser(url string) {
+	var err error
+	switch runtime.GOOS {
+	case "linux":
+		err = exec.Command("xdg-open", url).Start()
+	case "windows":
+		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+	case "darwin":
+		err = exec.Command("open", url).Start()
+	default:
+		err = fmt.Errorf("unsupported platform")
+	}
+	if err != nil {
+		log.Printf("Failed to open browser: %v", err)
+	}
+}
+
+func main() {
+	server, url := &http.Server{Addr: ":5000", Handler: http.HandlerFunc(runServer)}, "http://localhost:5000"
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal("ListenAndServe(): ", err)
 		}
 	}()
-	fmt.Println("Server is running on http://localhost:5000")
-	fmt.Println("Press 'q' and 'Enter' to stop the server")
+	fmt.Println("Server is running on" + url + "\nPress 'q' and 'Enter' to stop the server")
+	openBrowser(url)
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		input := scanner.Text()
