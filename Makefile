@@ -14,3 +14,5 @@ clean:
 	find ./src -type f -name '*templ.go' -exec rm {} \;
 dev: ./dev/dev.go
 	go run ./dev/dev.go && make run
+pkg:
+	go build -o server ./src && mkdir bin && mv server ./bin
