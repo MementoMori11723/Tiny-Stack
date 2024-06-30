@@ -7,7 +7,7 @@ help:
 	@echo "  make clean   - Remove generated templ files"
 	@echo "  make dev     - Run the development server and then the app"
 build:
-	templ generate && mv ./src/pages/*.go ./src || { echo 'Build failed!'; exit 1; }
+	templ generate && mv ./src/pages/*.go ./src
 run:
 	go run ./src/*.go
 clean:
