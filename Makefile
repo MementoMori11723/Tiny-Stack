@@ -2,17 +2,13 @@
 
 help:
 	@echo "Usage:"
-	@echo "  make build   - Generate code and move it to the src directory"
+	@echo "  make         - Generate code and move it to the src directory"
 	@echo "  make run     - Run the Go application"
-	@echo "  make clean   - Remove generated templ files"
-	@echo "  make dev     - Run the development server and then the app"
+	@echo "  make pkg     - Build the Go application and move it to the bin directory"
+	@echo "  make help    - Show this help message"
 build:
-	templ generate && mv ./src/pages/*.go ./src
+	templ generate -path ./pages/templates && mv ./pages/templates/*.go ./pages
 run:
-	go run ./src/*.go
-clean:
-	find ./src -type f -name '*templ.go' -exec rm {} \;
-dev: ./dev/dev.go
-	go run ./dev/dev.go && make run
+	go run main.go
 pkg:
 	go build -o server ./src && mkdir bin && mv server ./bin

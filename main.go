@@ -18,7 +18,7 @@ func main() {
 			log.Fatal("ListenAndServe(): ", err)
 		}
 	}()
-	fmt.Println("Server is running on" + url + "\nPress 'q' and 'Enter' to stop the server")
+	fmt.Println("Server is running on " + url + "\nPress 'q' and 'Enter' to stop the server")
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		input := scanner.Text()
