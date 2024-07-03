@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"prsnl/stk/pages"
 	"time"
 )
 
@@ -39,12 +40,12 @@ func main() {
 func runServer(w http.ResponseWriter, r *http.Request) {
 	handlers := map[string]func(http.ResponseWriter, *http.Request){
 		"/": func(w http.ResponseWriter, r *http.Request) {
-			home := Home()
+			home := pages.Home()
 			w.WriteHeader(http.StatusOK)
 			home.Render(context.Background(), w)
 		},
 		"/about": func(w http.ResponseWriter, r *http.Request) {
-			about := About()
+			about := pages.About()
 			w.WriteHeader(http.StatusOK)
 			about.Render(context.Background(), w)
 		},
@@ -54,7 +55,7 @@ func runServer(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, `{message: "Hello, World!"}`)
 		},
 		"/404": func(w http.ResponseWriter, r *http.Request) {
-			_404 := PageNotFound()
+			_404 := pages.PageNotFound()
 			w.WriteHeader(http.StatusNotFound)
 			_404.Render(context.Background(), w)
 		},
