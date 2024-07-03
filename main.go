@@ -9,10 +9,17 @@ import (
 	"os"
 	"prsnl/stk/pages"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	server, url := &http.Server{Addr: ":5000", Handler: http.HandlerFunc(runServer)}, "http://localhost:5000"
+	godotenv.Load(".env")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
+	server, url := &http.Server{Addr: ":" + port, Handler: http.HandlerFunc(runServer)}, "http://localhost:"+port
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal("ListenAndServe(): ", err)
