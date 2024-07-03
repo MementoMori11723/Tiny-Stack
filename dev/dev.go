@@ -1,4 +1,4 @@
-package main
+package dev
 
 import (
 	"fmt"
@@ -23,8 +23,4 @@ func OpenBrowser() {
 	if err != nil {
 		log.Printf("Failed to open browser: %v", err)
 	}
-}
-
-func main() {
-	OpenBrowser()
 }
