@@ -66,6 +66,10 @@ func runServer(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusNotFound)
 			_404.Render(context.Background(), w)
 		},
+		"/public": func(w http.ResponseWriter, r *http.Request) {
+			fileServer := http.FileServer(http.Dir("./public"))
+			http.StripPrefix("/public", fileServer).ServeHTTP(w, r)
+		},
 	}
 	handler, ok := handlers[r.URL.Path]
 	if !ok {
