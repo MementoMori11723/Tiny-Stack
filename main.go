@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"prsnl/stk/pages"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -47,14 +46,10 @@ func main() {
 func runServer(w http.ResponseWriter, r *http.Request) {
 	handlers := map[string]func(http.ResponseWriter, *http.Request){
 		"/": func(w http.ResponseWriter, r *http.Request) {
-			home := pages.Home()
-			w.WriteHeader(http.StatusOK)
-			home.Render(context.Background(), w)
+
 		},
 		"/about": func(w http.ResponseWriter, r *http.Request) {
-			about := pages.About()
-			w.WriteHeader(http.StatusOK)
-			about.Render(context.Background(), w)
+
 		},
 		"/api": func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
@@ -62,9 +57,7 @@ func runServer(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, `{message: "Hello, World!"}`)
 		},
 		"/404": func(w http.ResponseWriter, r *http.Request) {
-			_404 := pages.PageNotFound()
-			w.WriteHeader(http.StatusNotFound)
-			_404.Render(context.Background(), w)
+
 		},
 		"/public": func(w http.ResponseWriter, r *http.Request) {
 			fileServer := http.FileServer(http.Dir("./public"))
