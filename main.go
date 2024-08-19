@@ -1,25 +1,29 @@
 package main
 
 import (
-	"log"
+	"fmt"
+	"hate/stack/pages"
+	"net/http"
 	"os"
 
-	"github.com/labstack/echo/v4"
-  "github.com/joho/godotenv"
+	"github.com/joho/godotenv"
 )
 
 func main() {
   err := godotenv.Load()
   if err != nil {
-    log.Fatal("Error loading .env file")
+    fmt.Println("Error loading .env file")
   }
   PORT := os.Getenv("PORT")
   if PORT == "" {
+    fmt.Println("PORT not found in .env file, using default port 8080")
     PORT = "8080"
   }
-  e := echo.New()
-  e.GET("/", func(c echo.Context) error {
-    return c.String(200, "Hello, World!")
-  })
-  e.Logger.Fatal(e.Start(":"+PORT))
+	for path, handler := range pages.Routes {
+		http.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+			fmt.Fprint(w, handler())
+		})
+	}
+  fmt.Println("Server is running on port:", PORT)
+  http.ListenAndServe(":"+PORT, nil)
 }
