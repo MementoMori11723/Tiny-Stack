@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"hate/stack/pages"
+	"tiny/stack/pages"
 	"net/http"
 	"os"
 
