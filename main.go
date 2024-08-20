@@ -17,9 +17,9 @@ func init() {
 		fmt.Println("Error loading .env file")
 	}
 	PORT = os.Getenv("PORT")
-  if PORT == "" {
-    PORT = "8080"
-  }
+	if PORT == "" {
+		PORT = "8080"
+	}
 }
 
 func main() {

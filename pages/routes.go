@@ -20,4 +20,7 @@ var Routes = Route{
 	"/error": func() *template.Template {
 		return renderTemplate("pages/error.html")
 	},
+  "/todos": func() *template.Template {
+    return renderTemplate("pages/todos.html")
+  },
 }
