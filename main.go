@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"tiny/stack/pages"
@@ -29,7 +30,10 @@ func main() {
 				http.Redirect(w, r, "/error", http.StatusSeeOther)
 			}
 			t := handler()
-			t.Execute(w, returnData(path))
+			err := t.Execute(w, returnData(path))
+			if err != nil {
+				log.Printf("Error executing template for path %s: %v", path, err)
+			}
 		})
 	}
 	fmt.Println("Server is running on port:", PORT)
