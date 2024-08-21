@@ -10,64 +10,61 @@ type Todo struct {
 	Completed bool   `json:"completed"`
 }
 
+type response struct {
+	Rows *sql.Rows
+	err  error
+}
+
+func executer(query string, res bool, args ...interface{}) response {
+	db, err := connect()
+	if err != nil {
+		return response{nil, err}
+	}
+	defer db.Close()
+
+	if res {
+		rows, err := db.Query(query, args...)
+		if err != nil {
+			return response{nil, err}
+		}
+		return response{rows, nil}
+	} else {
+		_, err := db.Exec(query, args...)
+		return response{nil, err}
+	}
+}
+
 func connect() (*sql.DB, error) {
-	return sql.Open("sqlite3", "./todos.db")
+	return sql.Open("sqlite3", "database/db.sqlite3")
 }
 
 func Insert(t Todo) error {
-	db, err := connect()
-	defer db.Close()
-	if err != nil {
-		return err
-	}
-
-	_, err = db.Exec("INSERT INTO todos (title, completed) VALUES (?, ?)", t.Title, t.Completed)
-	return err
+   r := executer("INSERT INTO todos (title, completed) VALUES (?, ?)", false, t.Title, t.Completed)
+	return r.err
 }
 
 func Delete(t Todo) error {
-	db, err := connect()
-	defer db.Close()
-	if err != nil {
-		return err
-	}
-
-	_, err = db.Exec("DELETE FROM todos WHERE title = ?", t.Title)
-	return err
+  r := executer("DELETE FROM todos WHERE title = ?", false, t.Title)
+  return r.err
 }
 
 func Update(t Todo) error {
-	db, err := connect()
-	defer db.Close()
-	if err != nil {
-		return err
-	}
-
-	_, err = db.Exec("UPDATE todos SET completed = ? WHERE title = ?", t.Completed, t.Title)
-	return err
+  r := executer("UPDATE todos SET completed = ? WHERE title = ?", false, t.Completed, t.Title)
+  return r.err
 }
 
 func Fetch() ([]Todo, error) {
-	db, err := connect()
-	defer db.Close()
-	if err != nil {
-		return nil, err
-	}
+  r := executer("SELECT * FROM todos", true)
+  if r.err != nil {
+    return nil, r.err
+  }
+  defer r.Rows.Close()
 
-	rows, err := db.Query("SELECT title, completed FROM todos")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var todos []Todo
-	for rows.Next() {
-		var t Todo
-		err = rows.Scan(&t.Title, &t.Completed)
-		if err != nil {
-			return nil, err
-		}
-		todos = append(todos, t)
-	}
-	return todos, nil
+  var todos []Todo
+  for r.Rows.Next() {
+    var t Todo
+    r.Rows.Scan(&t.Title, &t.Completed)
+    todos = append(todos, t)
+  }
+  return todos, nil
 }

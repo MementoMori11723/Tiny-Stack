@@ -29,7 +29,7 @@ func main() {
 				http.Redirect(w, r, "/error", http.StatusSeeOther)
 			}
 			t := handler()
-			t.Execute(w, nil)
+			t.Execute(w, returnData(path))
 		})
 	}
 	fmt.Println("Server is running on port:", PORT)
