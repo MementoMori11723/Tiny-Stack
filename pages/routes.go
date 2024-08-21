@@ -21,12 +21,12 @@ var Routes = Route{
 
 func renderTemplate(path string) func() *template.Template {
 	return func() *template.Template {
-		additionFiles := files[path]
+		additionalFiles := files[path]
 		templates := []string{
 			"pages/components/layout.html",
 			"pages/" + path + ".html",
 		}
-		templates = append(templates, additionFiles...)
+		templates = append(templates, additionalFiles...)
 		tmpl := template.Must(template.ParseFiles(templates...))
 		return tmpl
 	}
