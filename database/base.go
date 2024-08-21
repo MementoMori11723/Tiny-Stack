@@ -35,7 +35,7 @@ func executer(query string, res bool, args ...interface{}) response {
 }
 
 func connect() (*sql.DB, error) {
-	return sql.Open("sqlite3", "database/db.sqlite3")
+	return sql.Open("sqlite3", "db.sqlite3")
 }
 
 func Insert(t Todo) error {
