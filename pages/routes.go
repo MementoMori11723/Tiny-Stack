@@ -9,7 +9,10 @@ type Route map[string]func() *template.Template
 type fileData map[string][]string
 
 var files = fileData{
-	"todos": {"pages/components/buttons.html"},
+	"todos": {
+		"pages/components/buttons.html",
+		"pages/components/dialog.html",
+	},
 }
 
 var Routes = Route{
