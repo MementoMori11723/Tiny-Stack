@@ -3,13 +3,13 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta description="Home" />
   <title>{{template "title" .}}</title>
 </head>
 
 <body>
-  {{block "content" .}} {{end}}
+  <header>{{block "header" .}}{{end}}</header>
+  <main>{{block "content" .}}{{end}}</main>
+  <footer>{{block "footer" .}}{{end}}</footer>
 </body>
 
 </html>

@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
-	"tiny/stack/pages"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -23,19 +22,19 @@ func init() {
 	}
 }
 
-func main() {
-	for path, handler := range pages.Routes {
-		http.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path != path {
-				http.Redirect(w, r, "/error", http.StatusSeeOther)
-			}
-			t := handler()
-			err := t.Execute(w, returnData(path))
-			if err != nil {
-				log.Printf("Error executing template for path %s: %v", path, err)
-			}
-		})
-	}
-	fmt.Println("Server is running on port:", PORT)
-	http.ListenAndServe(":"+PORT, nil)
+func main(){
+  mux := http.NewServeMux()
+  view := DefaultRoutes()
+  api := ApiRoutes()
+  mux.HandleFunc("/",func(w http.ResponseWriter, r *http.Request){
+    host := r.Host
+    subdomain := strings.Split(host, ".")[0]
+    if subdomain == "api" {
+      api.ServeHTTP(w,r)
+    } else {
+      view.ServeHTTP(w,r)
+    }
+  })
+  fmt.Println("Server running on port:", PORT)
+  http.ListenAndServe(":"+PORT, mux)
 }
