@@ -16,6 +16,9 @@ func DefaultRoutes() *http.ServeMux {
     "/contact": func(w http.ResponseWriter, r *http.Request) {
       RenderTemplate("contact",w)
     },
+    "/static/": func(w http.ResponseWriter, r *http.Request) {
+      http.StripPrefix("/static/", http.FileServer(http.Dir("static"))).ServeHTTP(w, r)
+    },
   }
   for path, handler := range routeMapper {
     routes.HandleFunc(path, handler)

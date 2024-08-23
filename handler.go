@@ -54,7 +54,7 @@ func RenderTemplate(page string, w http.ResponseWriter) {
 	var err error
 	if dataFunc, ok := dataProcessor[page]; ok {
 		data := dataFunc()
-		err = tmpl.Execute(w, data)
+		err = tmpl.Execute(w, data.Data)
 	} else {
 		err = tmpl.Execute(w, nil)
 	}
