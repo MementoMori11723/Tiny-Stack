@@ -1,13 +1,12 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
-
 	"github.com/MementoMori11723/Tiny-Stack/database"
 	"github.com/MementoMori11723/Tiny-Stack/pages"
 	"github.com/joho/godotenv"
+	"log"
+	"net/http"
+	"os"
 )
 
 var PORT string
@@ -25,7 +24,7 @@ func init() {
 
 func main() {
 	mux := http.NewServeMux()
-  mux.Handle("/", pages.Client())
+	mux.Handle("/", pages.Client())
 	mux.Handle("/api/", database.API())
 	mux.HandleFunc("/assets/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./pages/"+r.URL.Path)
