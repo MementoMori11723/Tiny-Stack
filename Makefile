@@ -1,8 +1,8 @@
-default_goal: run
-help:
-	@echo "make - Run the program"
-	@echo "make run - Run the program"
-	@echo "make help - Display this help"
-run:
-	go run .
+default_goal: build
 
+build:
+	@echo "Building..."
+	find . -name "*templ.go" | while read file; do 
+		mv "$file" /path/to/destination/ 
+	done
+	@echo "Done."
