@@ -29,6 +29,5 @@ func main() {
 	mux.HandleFunc("/assets/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./pages/"+r.URL.Path)
 	})
-	log.Printf("Server started on port %s", PORT)
-	log.Fatal(http.ListenAndServe(":"+PORT, mux))
+	server(mux)
 }
