@@ -6,47 +6,55 @@ import (
 )
 
 var (
-	clientMux = http.NewServeMux()
-  componentsDir = "pages/components/"
+	pagesDir      = "pages/"
+	componentsDir = "components/"
+  layoutFile    = "layouts.html"
 
-	Routes    = Route{
-		"/":       returnTemplate("index"),
-		"/about/": returnTemplate("about"),
-		"/error/": returnTemplate("error"),
+	routes = Route{
+		"/":       generateTemplate("index.html"),
+		"/about/": generateTemplate("about.html"),
+		"/error/": generateTemplate("error.html"),
 	}
 
-	Componentsfiles = map[string][]string{
+	componentFiles = map[string][]string{
 		"about": {
-			componentsDir+"contacts.html",
+			pagesDir + componentsDir + "contacts.html",
 		},
 	}
-) 
+)
 
 type Route map[string]func(http.ResponseWriter, *http.Request)
 
-func init() {
-	for path, handler := range Routes {
-		clientMux.HandleFunc(path, handler)
-	}
-}
-
 func returnFiles(file string) []string {
-  return append(
-    []string{
-      "pages/components/layouts.html",
-      "pages/"+file+".html",
-    },
-    Componentsfiles[file]...,
-  )
+	return append(
+		[]string{
+			pagesDir + componentsDir + layoutFile,
+			pagesDir + file,
+		},
+		componentFiles[file]...,
+	)
 }
 
-func returnTemplate(page string) func(http.ResponseWriter, *http.Request) {
+// found a better way to handle templates!
+func generateTemplate(page string) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles(returnFiles(page)...))
-		tmpl.Execute(w, nil)
+		tmpl, err := template.ParseFiles(returnFiles(page)...)
+    if err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    }
+		err = tmpl.Execute(w, nil)
+    if err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    }
 	}
 }
 
 func Client() *http.ServeMux {
+  clientMux := http.NewServeMux()
+	for path, handler := range routes {
+		clientMux.HandleFunc(path, handler)
+	}
 	return clientMux
 }
