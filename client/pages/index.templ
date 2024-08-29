@@ -1,0 +1,59 @@
+package pages
+
+templ layout(title string) {
+	if title == "" {
+		title = "Tiny Stack"
+	}
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+			<meta
+				name="description"
+				content="Tiny Stack is a simple web application that demonstrates the use of the Tiny Stack framework."
+			/>
+			<meta name="keywords" content="Tiny Stack, Go, Golang, Web, Framework, Web Framework"/>
+			<meta name="author" content="Tiny Stack"/>
+			<title>{ title }</title>
+		</head>
+		<body>
+			@header()
+			<main>
+				{ children... }
+			</main>
+			@footer()
+		</body>
+	</html>
+}
+
+templ Home() {
+	@layout("") {
+		<section>
+			<h1>Welcome to Tiny Stack</h1>
+			<p>
+				Tiny Stack is a simple web application that demonstrates the use of the Tiny Stack framework.
+			</p>
+		</section>
+	}
+}
+
+templ header() {
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/error">Error</a></li>
+      </ul>
+    </nav>
+  </header>
+}
+
+templ footer() {
+  <footer>
+    <p>&copy; 2024 Tiny Stack</p>
+  </footer> 
+}
+
