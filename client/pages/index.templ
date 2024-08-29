@@ -1,9 +1,6 @@
 package pages
 
 templ layout(title string) {
-	if title == "" {
-		title = "Tiny Stack"
-	}
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -29,7 +26,7 @@ templ layout(title string) {
 }
 
 templ Home() {
-	@layout("") {
+	@layout("Home Page") {
 		<section>
 			<h1>Welcome to Tiny Stack</h1>
 			<p>
