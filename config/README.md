@@ -1,2 +1,2 @@
 # Tiny - Stack!
-## Client
+## config
