@@ -14,6 +14,7 @@ func init() {
 		"/":       HomeHandler,
 		"/about/": AboutHandler,
 		"/error/": ErrorHandler,
+    "/example/": ExampleHandler,
 	}
 }
 
