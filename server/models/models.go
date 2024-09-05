@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	// "github.com/MementoMori11723/Tiny-Stack/server/models/schema"
 	"github.com/MementoMori11723/Tiny-Stack/config"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -20,3 +21,6 @@ func init() {
   }
 }
 
+func Close() {
+  DB.Close()
+}
