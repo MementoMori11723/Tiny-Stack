@@ -1,11 +1,11 @@
-package server
+package middleware 
 
 import (
 	"encoding/json"
 	"net/http"
 )
 
-func encoding(data map[string]string, w http.ResponseWriter) error {
+func Encoding(data map[string]string, w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(w).Encode(data)
 	if err != nil {

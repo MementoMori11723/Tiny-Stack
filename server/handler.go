@@ -1,6 +1,9 @@
 package server
 
-import "net/http"
+import (
+	"net/http"
+	"github.com/MementoMori11723/Tiny-Stack/server/middleware"
+)
 
 var routes = map[string]func(http.ResponseWriter, *http.Request){
   "/": sample,
@@ -8,5 +11,5 @@ var routes = map[string]func(http.ResponseWriter, *http.Request){
 
 func sample(w http.ResponseWriter, r *http.Request) {
   data := map[string]string{"message": "Hello, World!"}
-  encoding(data, w)
+  middleware.Encoding(data, w)
 }

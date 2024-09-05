@@ -13,7 +13,7 @@ import (
 var PORT string
 
 func init() {
-	config.LoadEnv(&PORT)
+	config.LoadPort(&PORT)
 }
 
 func main() {
