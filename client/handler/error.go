@@ -1,13 +1,15 @@
 package handler
 
 import (
-	"context"
+	"html/template"
 	"net/http"
-
-	"github.com/MementoMori11723/Tiny-Stack/client/pages"
 )
 
 func ErrorHandler(w http.ResponseWriter, r *http.Request) {
-  error := pages.Error()
-  error.Render(context.Background(), w)
+  error, err := template.ParseFiles(pageDir+layout, pageDir+"error.html")
+  if err != nil {
+    w.Write([]byte("Error reading file"))
+    return
+  }
+  error.Execute(w, nil)
 }

@@ -1,20 +1,24 @@
 package handler
 
 import (
-	"context"
+	"html/template"
 	"net/http"
-
-	"github.com/MementoMori11723/Tiny-Stack/client/pages"
 )
 
-var Routes map[string]func(http.ResponseWriter, *http.Request)
+type route map[string]func(http.ResponseWriter, *http.Request)
+
+var (
+	Routes  route
+	pageDir = "client/src/pages/"
+	layout  = "layouts.html"
+)
 
 func init() {
-	Routes = map[string]func(http.ResponseWriter, *http.Request){
-		"/":       HomeHandler,
-		"/about/": AboutHandler,
-		"/error/": ErrorHandler,
-    "/example/": ExampleHandler,
+	Routes = route{
+		"/":         HomeHandler,
+		"/about/":   AboutHandler,
+		"/error/":   ErrorHandler,
+		"/example/": ExampleHandler,
 	}
 }
 
@@ -23,6 +27,10 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/error/", http.StatusSeeOther)
 		return
 	}
-	home := pages.Home()
-	home.Render(context.Background(), w)
+	home, err := template.ParseFiles(pageDir+layout, pageDir+"index.html")
+	if err != nil {
+		w.Write([]byte("Error reading file"))
+		return
+	}
+	home.Execute(w, nil)
 }

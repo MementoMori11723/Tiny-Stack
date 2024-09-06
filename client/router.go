@@ -1,8 +1,8 @@
 package client
 
 import (
-	"net/http"
 	"github.com/MementoMori11723/Tiny-Stack/client/handler"
+	"net/http"
 )
 
 var (
@@ -13,6 +13,7 @@ func init() {
 	for path, handler := range handler.Routes {
 		client.HandleFunc(path, handler)
 	}
+	client.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("client/src/assets"))))
 }
 
 func Client() *http.ServeMux {

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="Some Random application..." />
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <script src="/assets/js/script.js"></script>
+    <title>{{template "title" .}}</title>
+  </head>
+
+  <body>
+    <nav>{{template "nav" .}}</nav>
+    <main>{{template "content" .}}</main>
+    <footer>{{template "footer" .}}</footer>
+  </body>
+</html>
+
+{{define "nav"}}
+<style>
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+</style>
+<ul>
+  <li><a href="/">Home</a></li>
+  <li><a href="/about">About</a></li>
+  <li><a href="/example">Examples</a></li>
+</ul>
+{{end}} {{define "footer"}}
+<p>&copy copyrights</p>
+{{end}}
