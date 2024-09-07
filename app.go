@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"tiny-stack/client"
 	"tiny-stack/server"
+  "tiny-stack/config"
 )
 
 var (
@@ -13,7 +14,7 @@ var (
 )
 
 func init() {
-	PORT = "8080"
+	config.LoadEnv(&PORT)
 }
 
 func main() {
